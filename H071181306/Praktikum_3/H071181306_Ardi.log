@@ -1,0 +1,49 @@
+c:\xampp\mysql\bin\mysqld.exe, Version: 10.4.6-MariaDB (mariadb.org binary distribution). started with:
+TCP Port: 3306, Named Pipe: C:/xampp/mysql/mysql.sock
+Time		    Id Command	Argument
+191030  1:19:28	    54 Query	create database unhas
+191030  1:19:34	    54 Query	SELECT DATABASE()
+		    54 Init DB	unhas
+191030  1:21:17	    54 Query	create table fakultas (
+kode varchar(1) primary key,
+nama varchar(255) not null)
+191030  1:23:08	    54 Query	create table prodi (
+kode varchar(2) primary key,
+nama varchar(255) not null,
+kode_fakultas varchar(1) not null,
+foreign key (kode_fakultas) references fakultas(kode))
+191030  1:24:16	    54 Query	create table jalur_masuk (
+kode enum('0','3','5') primary key,
+nama varchar(255) not null)
+191030  1:28:25	    54 Query	create table mahasiswa (
+id varchar(2) primary key,
+kode_fakultas varchar(1) not null,
+kode_prodi varchar(2) not null,
+tahun_masuk int(4) not null,
+jalur_masuk enum('0','3','5'),
+nama varchar(255) not null,
+foreign key (kode_prodi) references prodi(kode),
+foreign key (kode_fakultas) references fakultas(kode),
+foreign key (jalur_masuk) references jalur_masuk(kode))
+191030  1:28:49	    54 Query	desc fakultas
+191030  1:29:24	    54 Query	insert into fakultas values('H','MIPA')
+191030  1:29:38	    54 Query	desc prodi
+191030  1:30:17	    54 Query	insert into prodi values('07','Ilmu Komputer','H')
+191030  1:31:17	    54 Query	desc jalur_masuk
+191030  1:32:02	    54 Query	insert into jalur_masuk values('3','SBMPTN')
+191030  1:32:10	    54 Query	desc mahasiswa
+191030  1:33:21	    54 Query	insert into mahasiswa values('06','H','07','2018','3','Ardi S')
+191030  1:34:28	    54 Query	create table nim (
+nama varchar(255) not null,
+nim varchar(10) not null)
+191030  1:34:35	    54 Query	desc nim
+191030  1:37:28	    54 Query	insert into nim
+select
+nama,concat(kode_fakultas,kode_prodi,'1',right(tahun_masuk,2),'1',jalur_masuk,id) from mahasiswa
+191030  1:37:42	    54 Query	select * from nim
+191030  1:52:15	    54 Query	select mahasiswa.nama as nama,nim,fakultas.nama as fakultas,prodi.nama as prodi,tahun_masuk as angkatan,jalur_masuk.nama as jalur_masuk
+from mahasiswa
+join fakultas on mahasiswa.kode_fakultas=fakultas.kode
+join prodi on mahasiswa.kode_prodi=prodi.kode
+join jalur_masuk on mahasiswa.jalur_masuk=jalur_masuk.kode
+join nim
