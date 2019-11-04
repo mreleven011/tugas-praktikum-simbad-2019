@@ -1,0 +1,15 @@
+191104 10:18:10	    29 Query	show databses
+191104 10:18:13	    29 Query	show databases
+191104 10:18:34	    29 Query	SELECT DATABASE()
+		    29 Init DB	classicmodels
+191104 10:19:22	    29 Query	SHOW TABLES
+191104 10:34:36	    29 Query	SELECT orders.customerNumber AS Id,
+customers.customerName AS Customer,
+COUNT(products.productName) AS Qty,
+GROUP_CONCAT('[',products.productName,']' SEPARATOR " ") AS Products
+FROM customers
+JOIN orders ON customers.customerNumber = orders.customerNumber 
+JOIN orderdetails ON orders.orderNumber = orderdetails.orderNumber
+JOIN products ON orderdetails.productCode = products.productCode 
+GROUP BY customers.customerName
+LIMIT 10
